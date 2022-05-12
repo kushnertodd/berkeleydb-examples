@@ -13,8 +13,7 @@ size_t pack_string(char *, char *, size_t);
 int load_inventory_database(STOCK_DBS, char *);
 
 int
-usage()
-{
+usage() {
   fprintf(stderr, "example_database_load [-b <path to data files>]");
   fprintf(stderr, " [-h <database_home_directory>]\n");
 
@@ -29,8 +28,7 @@ usage()
  * database to be created and loaded.
  */
 int
-main(int argc, char *argv[])
-{
+main(int argc, char *argv[]) {
   STOCK_DBS my_stock;
   int ch, ret;
   size_t size;
@@ -45,21 +43,21 @@ main(int argc, char *argv[])
   /* Parse the command line arguments */
   while ((ch = getopt(argc, argv, "b:h:")) != EOF)
     switch (ch) {
-    case 'h':
-      if (optarg[strlen(optarg)-1] != '/' &&
-          optarg[strlen(optarg)-1] != '\\')
+      case 'h':
+        if (optarg[strlen(optarg) - 1] != '/' &&
+            optarg[strlen(optarg) - 1] != '\\')
+          return (usage());
+        my_stock.db_home_dir = optarg;
+        break;
+      case 'b':
+        if (basename[strlen(basename) - 1] != '/' &&
+            basename[strlen(basename) - 1] != '\\')
+          return (usage());
+        basename = optarg;
+        break;
+      case '?':
+      default:
         return (usage());
-      my_stock.db_home_dir = optarg;
-      break;
-    case 'b':
-      if (basename[strlen(basename)-1] != '/' &&
-          basename[strlen(basename)-1] != '\\')
-        return (usage());
-      basename = optarg;
-      break;
-    case '?':
-    default:
-      return (usage());
     }
 
   /* Identify the files that will hold our databases */
@@ -107,8 +105,7 @@ main(int argc, char *argv[])
  * a database.
  */
 int
-load_vendors_database(STOCK_DBS my_stock, char *vendor_file)
-{
+load_vendors_database(STOCK_DBS my_stock, char *vendor_file) {
   DBT key, data;
   char buf[MAXLINE];
   FILE *ifp;
@@ -146,7 +143,7 @@ load_vendors_database(STOCK_DBS my_stock, char *vendor_file)
 
     /* Set up the database record's key */
     key.data = my_vendor.name;
-    key.size = (u_int32_t)strlen(my_vendor.name) + 1;
+    key.size = (u_int32_t) strlen(my_vendor.name) + 1;
 
     /* Set up the database record's data */
     data.data = &my_vendor;
@@ -177,12 +174,11 @@ load_vendors_database(STOCK_DBS my_stock, char *vendor_file)
  * are contained in a single contiguous chunk of memory.
  */
 size_t
-pack_string(char *buffer, char *string, size_t start_pos)
-{
+pack_string(char *buffer, char *string, size_t start_pos) {
   size_t string_size;
 
   string_size = strlen(string) + 1;
-  memcpy(buffer+start_pos, string, string_size);
+  memcpy(buffer + start_pos, string, string_size);
 
   return (start_pos + string_size);
 }
@@ -196,8 +192,7 @@ pack_string(char *buffer, char *string, size_t start_pos)
  * database is loaded.
  */
 int
-load_inventory_database(STOCK_DBS my_stock, char *inventory_file)
-{
+load_inventory_database(STOCK_DBS my_stock, char *inventory_file) {
   DBT key, data;
   char buf[MAXLINE];
   char databuf[MAXDATABUF];
@@ -283,11 +278,11 @@ load_inventory_database(STOCK_DBS my_stock, char *inventory_file)
      * not support duplicates for this database.
      */
     key.data = sku;
-    key.size = (u_int32_t)strlen(sku) + 1;
+    key.size = (u_int32_t) strlen(sku) + 1;
 
     /* The data is the information that we packed into databuf. */
     data.data = databuf;
-    data.size = (u_int32_t)bufLen;
+    data.size = (u_int32_t) bufLen;
 
     /* Put the data into the database */
     my_stock.vendor_dbp->put(my_stock.inventory_dbp, 0, &key, &data, 0);

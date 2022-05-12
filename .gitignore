@@ -1,4 +1,8 @@
+example_database_load
+example_database_read
 .idea
+*.db
+*.swp
 
 # Prerequisites
 *.d
