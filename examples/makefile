@@ -5,7 +5,7 @@ LIBVERSION=18.1
 OBJS=example_database_read.o example_database_load.o gettingstarted_common.o
 PROGRAMS=example_database_read example_database_load
 SRCS=example_database_read.c example_database_load.c gettingstarted_common.c
-ex: example_database_load example_database_read
+all: example_database_load example_database_read
 example_database_load: $(SRCS) 
 	cc -c -I$(INCSDIR) -D_GNU_SOURCE -D_REENTRANT -O3 example_database_load.c  -fPIC -DPIC -o example_database_load.o
 	cc -c -I$(INCSDIR) -D_GNU_SOURCE -D_REENTRANT -O3 gettingstarted_common.c  -fPIC -DPIC -o gettingstarted_common.o
